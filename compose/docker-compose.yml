@@ -9,7 +9,7 @@ services:
       - cluster.initial_master_nodes=snowstorm
       - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
     volumes:
-      - ./elastic:/src/share/elasticsearch/data
+      - ./elastic:/usr/share/elasticsearch/data
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
       interval: 1s
