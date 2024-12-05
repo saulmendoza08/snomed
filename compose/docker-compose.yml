@@ -23,7 +23,7 @@ services:
     depends_on:
       elastic:
         condition: service_healthy
-    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --import=/opt/
+    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --import=/opt/releaseNoviembre2024.zip --elasticsearch.urls=http://elastic:9200
     #entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --inport=/opt/
     volumes:
       - ./snowstorm-6.2.1.jar:/snowstorm.jar
