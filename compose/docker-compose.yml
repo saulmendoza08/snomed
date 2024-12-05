@@ -1,0 +1,32 @@
+version: '2.2'
+services:
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    container_name: elasticsearch
+    environment:
+      - node.name=snowstorm
+      - cluster.name=snowstorm-cluster
+      - cluster.initial_master_nodes=snowstorm
+      - "ES_JAVA_OPTS=Xms4g -Xmx4g"
+    volumes:
+      - ./elastic:/src/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+    ports:
+      - 9200:9200
+  
+  app:
+    image: openjdk:8-jdk
+    depends_on:
+      elastic:
+        condition: service_healthy
+    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --inport=/opt/
+    #entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --inport=/opt/
+    volumes:
+      - ./snowstorm-6.2.1.jar:/snowstorm.jar
+      - ./releases:/opt
+    ports:
+      - 8090:8080
