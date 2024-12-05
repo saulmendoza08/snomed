@@ -11,19 +11,19 @@ services:
     volumes:
       - ./elastic:/src/share/elasticsearch/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
       interval: 1s
       timeout: 1s
       retries: 60
     ports:
       - 9200:9200
-  
+
   app:
     image: openjdk:8-jdk
     depends_on:
       elastic:
         condition: service_healthy
-    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --inport=/opt/
+    entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --import=/opt/
     #entrypoint: java -Xms2g -Xmx4g -jar snowstorm.jar --delete-indices --inport=/opt/
     volumes:
       - ./snowstorm-6.2.1.jar:/snowstorm.jar
